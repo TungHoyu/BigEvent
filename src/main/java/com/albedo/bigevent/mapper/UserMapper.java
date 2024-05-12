@@ -11,7 +11,7 @@ public interface UserMapper {
      * @param username
      * @return
      */
-    @Select("select * from user where username=#{username}}")
+    @Select("select * from user where username=#{username}")
     User findByUserName(String username);
 
     /**
