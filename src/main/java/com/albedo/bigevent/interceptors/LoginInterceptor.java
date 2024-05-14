@@ -2,6 +2,7 @@ package com.albedo.bigevent.interceptors;
 
 import com.albedo.bigevent.pojo.Result;
 import com.albedo.bigevent.utils.JwtUtil;
+import com.albedo.bigevent.utils.ThreadLocalUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,11 +18,18 @@ public class LoginInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
         try {
             Map<String, Object> claims = JwtUtil.parseToken(token);
+            //把业务数据存储到threadloacl中
+            ThreadLocalUtil.set(claims);
             return true;
         } catch (Exception e) {
             //http响应状态码为401
             response.setStatus(401);
             return false;
         }
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        ThreadLocalUtil.remove();
     }
 }
