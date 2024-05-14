@@ -7,3 +7,5 @@
 - MyBatis 2.3.2
 - MySql 8.1
 - Lombok
+- Validation
+- jwt 4.4.0
