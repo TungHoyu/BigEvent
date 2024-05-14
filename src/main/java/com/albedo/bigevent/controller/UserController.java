@@ -21,6 +21,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 注册
+     * @param username
+     * @param password
+     * @return Result
+     */
     @PostMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password){
         //查询用户
@@ -35,6 +41,12 @@ public class UserController {
         }
     }
 
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return Result
+     */
     @PostMapping("/login")
     public Result login(@Pattern(regexp = "^\\S{5,16}$")String username,@Pattern(regexp = "^\\S{5,16}$")String password){
         //根据用户名查询用户
@@ -55,6 +67,10 @@ public class UserController {
         return Result.error("密码错误！");
     }
 
+    /**
+     * 获取用户详细信息
+     * @return Result
+     */
     @GetMapping("/userInfo")
     public Result<User> userInfo(/*@RequestHeader(name = "Authorization") String token*/){
         /*Map<String, Object> map = JwtUtil.parseToken(token);
@@ -63,5 +79,16 @@ public class UserController {
         String username = (String) map.get("username");
         User user = userService.findByUserName(username);
         return Result.success(user);
+    }
+
+    /**
+     * 更新用户基本信息
+     * @param user
+     * @return
+     */
+    @PutMapping("/update")
+    public Result update(@RequestBody User user){
+        userService.update(user);
+        return Result.success();
     }
 }
