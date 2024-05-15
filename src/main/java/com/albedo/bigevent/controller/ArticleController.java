@@ -1,6 +1,7 @@
 package com.albedo.bigevent.controller;
 
 import com.albedo.bigevent.pojo.Article;
+import com.albedo.bigevent.pojo.PageBean;
 import com.albedo.bigevent.pojo.Result;
 import com.albedo.bigevent.service.ArticleService;
 import com.albedo.bigevent.utils.JwtUtil;
@@ -22,5 +23,14 @@ public class ArticleController {
     public Result add(@RequestBody @Validated Article article){
        articleService.add(article);
        return Result.success();
+   }
+
+   @GetMapping
+   public Result<PageBean<Article>> list(Integer pageNum,
+                                         Integer pageSize,
+                                         @RequestParam(required = false) Integer categoryId,
+                                         @RequestParam(required = false)String state){
+       PageBean pb = articleService.list(pageNum,pageSize,categoryId,state);
+       return Result.success(pb);
    }
 }
