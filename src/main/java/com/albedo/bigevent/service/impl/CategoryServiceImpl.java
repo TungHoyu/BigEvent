@@ -48,4 +48,9 @@ public class CategoryServiceImpl implements CategoryService {
         Integer userId = (Integer) map.get("id");
         return categoryMapper.list(userId);
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        categoryMapper.deleteById(id);
+    }
 }

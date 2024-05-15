@@ -4,6 +4,7 @@ import com.albedo.bigevent.pojo.Category;
 import com.albedo.bigevent.pojo.Result;
 import com.albedo.bigevent.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +50,23 @@ public class CategoryController {
         return Result.success(c);
     }
 
+    /**
+     * 更新文章分类
+     * @param category
+     * @return
+     */
     @PutMapping
     public Result update(@RequestBody @Validated Category category){
         categoryService.update(category);
         return Result.success();
+    }
+
+    @DeleteMapping
+    public Result delete(Integer id){
+        if (!(id == null)) {
+            categoryService.deleteById(id);
+            return Result.success();
+        }
+        return Result.error("id不能为空");
     }
 }

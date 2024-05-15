@@ -12,7 +12,6 @@ public class Category {
      @NotNull:不能不传
      @NotEmpty:不能不传，并且如果是字符串时，不能传null
      */
-    @NotNull
     private Integer id;//主键ID
     @NotEmpty//非空校验
     private String categoryName;//分类名称
