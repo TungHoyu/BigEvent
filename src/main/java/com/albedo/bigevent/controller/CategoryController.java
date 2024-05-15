@@ -21,7 +21,7 @@ public class CategoryController {
     /**
      * 添加文章分类
      * @param category
-     * @return
+     * @return Result
      */
     @PostMapping
     public Result add(@RequestBody @Validated(Category.Add.class) Category category){
@@ -31,7 +31,7 @@ public class CategoryController {
 
     /**
      * 查询文章分类
-     * @return
+     * @return Result
      */
     @GetMapping
     public Result<List<Category>> list(){
@@ -42,7 +42,7 @@ public class CategoryController {
     /**
      * 根据id查询文章分类
      * @param id
-     * @return
+     * @return Result
      */
     @GetMapping("/detail")
     public Result<Category> detail(Integer id){
@@ -53,7 +53,7 @@ public class CategoryController {
     /**
      * 更新文章分类
      * @param category
-     * @return
+     * @return Result
      */
     @PutMapping
     public Result update(@RequestBody @Validated(Category.Update.class) Category category){
@@ -61,6 +61,11 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 删除文章分类
+     * @param id
+     * @return Result
+     */
     @DeleteMapping
     public Result delete(Integer id){
         if (!(id == null)) {
