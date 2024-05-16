@@ -10,3 +10,4 @@
 - Validation
 - JWT 4.4.0
 - PageHelper 1.4.6
+- 阿里云OSS 3.15.1
