@@ -1,6 +1,6 @@
 # 大事件
 ## 简介
-基于SSM框架开发的新文章布管理系统
+基于SSM+VUE框架开发的新文章布管理系统
 ## 大事件技术选型
 - JDK1.8
 - SpringBoot 2.5.1
@@ -8,4 +8,5 @@
 - MySql 8.1
 - Lombok
 - Validation
-- jwt 4.4.0
+- JWT 4.4.0
+- PageHelper 1.4.6
