@@ -1,6 +1,7 @@
 package com.albedo.bigevent.controller;
 
 import com.albedo.bigevent.pojo.Result;
+import com.albedo.bigevent.utils.AliOssUtil;
 import com.sun.org.apache.xml.internal.security.utils.resolver.implementations.ResolverXPointer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,17 +15,12 @@ import java.util.UUID;
 public class FileUploadController {
 
     @PostMapping("/upload")
-    public Result<String> upload(MultipartFile file){
+    public Result<String> upload(MultipartFile file) throws Exception {
         //把文件内容存储到本地磁盘
         String originalFilename = file.getOriginalFilename();
         //保证文件名字唯一，防止文件覆盖
         String fileName = UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."));
-        try {
-            file.transferTo(new File("/Users/tunghoyu/Desktop/files/"+fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Result.error("文件上传失败！");
-        }
-        return Result.success("url访问地址。。。。。。");
+        String url = AliOssUtil.uploadFile(fileName, file.getInputStream());
+        return Result.success(url);
     }
 }
