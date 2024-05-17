@@ -9,6 +9,10 @@ spring:
     port: 6379
     password: 110716
 
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true #开启项目驼峰命名和数据库下划线命名的相互转换
+server:
+  servlet:
+    context-path: /albedo
