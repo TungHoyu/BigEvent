@@ -8,6 +8,8 @@ import com.albedo.bigevent.utils.Md5Util;
 import com.albedo.bigevent.utils.ThreadLocalUtil;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +25,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 注册
@@ -62,6 +68,9 @@ public class UserController {
             claims.put("id",loginUser.getId());
             claims.put("username",loginUser.getUsername());
             String token = JwtUtil.genToken(claims);
+            //把token存储到redis中
+            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+            operations.set(token,token,1, TimeUnit.HOURS);
             //登录成功
             return Result.success(token);
         }
@@ -111,7 +120,7 @@ public class UserController {
      * @return Result
      */
     @PatchMapping("/updatePwd")
-    public Result updatePwd(@RequestBody Map<String,String> params){
+    public Result updatePwd(@RequestBody Map<String,String> params,@RequestHeader("Authorization") String token){
         //1. 校验参数
         String oldPwd = params.get("old_pwd");
         String newPwd = params.get("new_pwd");
@@ -136,6 +145,9 @@ public class UserController {
         }
         //2.调用service完成密码更新
         userService.updatePwd(newPwd);
+        //密码更新后删除redis中的token
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+        operations.getOperations().delete(token);
         return Result.success();
     }
 }
